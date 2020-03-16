@@ -2,6 +2,7 @@
 
 import { StatusBarAlignment, StatusBarItem, window, workspace } from "vscode";
 import { Config } from "./config";
+import * as fs from "fs";
 import { QuickPicker, QuickPickerAction } from "./quickPicker";
 import { PathStyles, PathStartsFrom } from "./utils/types";
 const clipboardy = require("clipboardy");
@@ -141,9 +142,9 @@ export class CurrentFile {
             return;
         }
 
-        this.startsFromRootDirectoryPath = editor.document.uri.fsPath;
+        this.startsFromRootDirectoryPath = fs.realpathSync(editor.document.uri.fsPath);
         this.startsFromWorkSpaceHighestDirectoryPath =
-            editor.document.uri.fsPath;
+           fs.realpathSync(editor.document.uri.fsPath);
         this.name = pathModule.basename(editor.document.uri.fsPath);
 
         this.updateStatusBar();
